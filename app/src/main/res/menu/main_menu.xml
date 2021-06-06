@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single" android:id="@+id/grp1">
+        <item
+        android:id="@+id/nav_home"
+        android:title="Home"
+            android:icon="@drawable/iconhome"/>
+
+        <item
+            android:id="@+id/nav_lstFav"
+            android:title="Lista Favorite"
+            android:icon="@drawable/iconfavorites"/>
+        <item
+            android:id="@+id/nav_portofel"
+            android:title="Portofel"
+            android:icon="@drawable/walllet"/>
+    </group>
+
+    <group android:id="@+id/grp2">
+        <item
+            android:id="@+id/nav_logOut"
+            android:title="LogOut"
+            android:icon="@drawable/iconlogot" />
+    </group>
+
+</menu>
