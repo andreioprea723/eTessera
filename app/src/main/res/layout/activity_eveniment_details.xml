@@ -45,7 +45,7 @@
             app:srcCompat="@drawable/ic_play_arrow_black_24dp"
             tools:ignore="VectorDrawableCompat" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/details_event_img"
             android:layout_width="125dp"
             android:layout_height="175dp"
@@ -58,6 +58,7 @@
             app:layout_constraintTop_toBottomOf="@+id/details_event_cover"
             app:layout_constraintVertical_bias="0.86"
             app:srcCompat="@drawable/background"
+            app:shapeAppearanceOverlay="@style/roundedImageView"
             tools:ignore="MissingConstraints" />
 
         <TextView

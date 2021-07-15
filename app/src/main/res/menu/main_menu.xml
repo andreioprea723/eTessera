@@ -16,6 +16,10 @@
             android:id="@+id/nav_portofel"
             android:title="Portofel"
             android:icon="@drawable/walllet"/>
+        <item
+            android:id="@+id/nav_tikets"
+            android:title="My Tessera"
+            android:icon="@drawable/tik"/>
     </group>
 
     <group android:id="@+id/grp2">

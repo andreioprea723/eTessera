@@ -22,7 +22,11 @@
         <item name="color">@color/colorAccent</item>
     </style>
 
-
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+        <item name="color">#80000000</item>
+    </style>
 
 
 </resources>

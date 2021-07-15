@@ -7,10 +7,14 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.etessera20.R;
+import com.example.etessera20.adaptors.EvenimentAdaptor;
 import com.example.etessera20.adaptors.TranzactieAdaptor;
 import com.example.etessera20.models.Card;
 import com.example.etessera20.models.Eveniment;
@@ -42,6 +47,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class WalletActivity extends DrawerActivity {
     private RecyclerView rvTranzactii;
@@ -172,6 +178,42 @@ public class WalletActivity extends DrawerActivity {
                 String dataExpirare = et_expireDate.getText().toString().trim();
                 String CSV = et_CVV.getText().toString().trim();
 
+                if(cardHolder.isEmpty()){
+                    et_cardHolder.setError("Numele detinatorului cardului este necesar!");
+                    et_cardHolder.requestFocus();
+                    return;
+                }
+
+                if(cardNumber.isEmpty()){
+                    et_cardnumber.setError("Numarul cardului este necesar!");
+                    et_cardnumber.requestFocus();
+                    return;
+                }
+
+                if(cardNumber.length() > 16 || cardNumber.length() < 16){
+                    et_cardnumber.setError("Numarul cardului este invalid!");
+                    et_cardnumber.requestFocus();
+                    return;
+                }
+
+                if(dataExpirare.isEmpty()){
+                    et_expireDate.setError("Data de expirare a cardului este necesara!");
+                    et_expireDate.requestFocus();
+                    return;
+                }
+
+                if(CSV.isEmpty()){
+                    et_CVV.setError("CSV este obligatoriu!");
+                    et_CVV.requestFocus();
+                    return;
+                }
+
+                if(CSV.length() != 3){
+                    et_CVV.setError("CSV invalid!");
+                    et_CVV.requestFocus();
+                    return;
+                }
+
                 Card card = new Card(cardHolder,cardNumber,dataExpirare,CSV, userID);
                 cardReference.push().setValue(card);
                 userReference.child(userID).child("card").setValue(cardNumber);
@@ -296,5 +338,42 @@ public class WalletActivity extends DrawerActivity {
 
         popUpAddMoney.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popUpAddMoney.show();                                                                 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.search_icon);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Search Here!");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filer(newText, mTranzactii, tranzactieAdaptor );
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public void filer(String s, List<Tranzactie> cautaList, TranzactieAdaptor cautaAdaptor){
+        List<Tranzactie> listFilter = new ArrayList<Tranzactie>();
+
+        for(Tranzactie tranzactie : cautaList){
+            if(tranzactie.getNume().toLowerCase().contains(s.toLowerCase())){
+                listFilter.add(tranzactie);
+            }
+            else if(tranzactie.getData().toLowerCase().contains(s.toLowerCase())){
+                listFilter.add(tranzactie);
+            }
+        }
+
+        cautaAdaptor.filterList(listFilter);
     }
 }

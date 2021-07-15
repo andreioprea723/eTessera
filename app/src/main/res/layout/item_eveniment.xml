@@ -11,7 +11,7 @@
     android:foreground="?attr/selectableItemBackgroundBorderless">
 
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/item_eveniment_img"
         android:layout_width="125dp"
         android:layout_height="175dp"
@@ -20,6 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
         tools:ignore="VectorDrawableCompat" />
 
     <TextView

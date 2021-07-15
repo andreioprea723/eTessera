@@ -10,21 +10,18 @@ import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.Toast;
 
+import com.example.etessera20.adaptors.SlideItemClickListener;
 import com.example.etessera20.models.Eveniment;
 import com.example.etessera20.adaptors.EvenimentAdaptor;
 import com.example.etessera20.adaptors.EventItemClickListener;
@@ -37,22 +34,22 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class HomeActivity extends DrawerActivity implements EventItemClickListener {
+public class HomeActivity extends DrawerActivity implements EventItemClickListener, SlideItemClickListener {
     private List<Slide> lstSlides;
     private ViewPager slidePager;
     private TabLayout indicator;
     private RecyclerView teatruRV, standupRv, concerteRv;
     private List<Eveniment> mListaEvenimente;
     private EvenimentAdaptor teatruAdaptor, standupAdaptor, concerteAdaptor;
+    private SliderPagerAdaptor sliderPagerAdaptor;
+
+    private ProgressBar progressBar;
 
     private DatabaseReference databaseEvents;
 
@@ -135,13 +132,13 @@ public class HomeActivity extends DrawerActivity implements EventItemClickListen
         int position = 0;
         for(Eveniment e: listaEvenimente){
             if(e.getType().equals(listType.get(position))){
-                lstSlides.add(new Slide(e.getThumbnail(),e.getTitlu()));
+                lstSlides.add(new Slide(e.getThumbnail(),e.getTitlu(), e.getVideo()));
                 position++;
             }
         }
 
-        SliderPagerAdaptor adaptor = new SliderPagerAdaptor(this, lstSlides);
-        slidePager.setAdapter(adaptor);
+        sliderPagerAdaptor = new SliderPagerAdaptor(HomeActivity.this, lstSlides, HomeActivity.this::onSlideClick );
+        slidePager.setAdapter(sliderPagerAdaptor);
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new SliderTimer(), 4000, 6000);
@@ -179,10 +176,15 @@ public class HomeActivity extends DrawerActivity implements EventItemClickListen
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomeActivity.this, eventImageView, "sharedName");
 
         startActivity(intent, options.toBundle());
-
-
-        Toast.makeText(this, "item clicked: " + eveniment.getTitlu(), Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void onSlideClick(Slide slide, ImageView imageView) {
+        Intent intent = new Intent(this, PlayerActivity.class);
+        intent.putExtra("URL", slide.getVideo());
+        startActivity(intent);
+    }
+
 
     class SliderTimer extends TimerTask{
 

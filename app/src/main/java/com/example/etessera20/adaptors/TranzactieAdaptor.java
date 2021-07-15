@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.etessera20.R;
+import com.example.etessera20.models.Eveniment;
 import com.example.etessera20.models.Tranzactie;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class TranzactieAdaptor extends RecyclerView.Adapter<TranzactieAdaptor.My
     public TranzactieAdaptor(Context context, List<Tranzactie> mTranzactii) {
         this.context = context;
         this.mTranzactii = mTranzactii;
+    }
+
+    public void filterList(List<Tranzactie> filtredList){
+        mTranzactii = filtredList;
+        notifyDataSetChanged();
     }
 
     @NonNull

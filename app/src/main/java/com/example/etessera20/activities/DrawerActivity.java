@@ -62,6 +62,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 startActivity(intent3);
                 break;
 
+            case R.id.nav_tikets:
+                Intent intent5 = new Intent(this, MyTessera.class);
+                startActivity(intent5);
+                break;
+
             case R.id.nav_logOut:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent4 = new Intent(this, LoginActivity.class);

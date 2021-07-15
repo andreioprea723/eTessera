@@ -8,5 +8,14 @@
     android:minHeight="?attr/actionBarSize"
     android:theme="@style/MyToolbarThemeSimple.Base">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:text="eTessera"
+        android:fontFamily=""
+        android:textColor="@color/colorAccent"/>
+
 
 </androidx.appcompat.widget.Toolbar>

@@ -15,8 +15,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.example.etessera20.R;
 import com.example.etessera20.activities.HomeActivity;
 import com.example.etessera20.activities.PlayerActivity;
+import com.example.etessera20.models.Eveniment;
 import com.example.etessera20.models.Slide;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -25,11 +25,12 @@ public class SliderPagerAdaptor extends PagerAdapter {
 
     private Context mcontext;
     private List<Slide> mList;
-    private Button play;
+    private SlideItemClickListener slideItemClickListener;
 
-    public SliderPagerAdaptor(Context mcontext, List<Slide> mList) {
+    public SliderPagerAdaptor(Context mcontext, List<Slide> mList, SlideItemClickListener slideItemClickListener) {
         this.mcontext = mcontext;
         this.mList = mList;
+        this.slideItemClickListener = slideItemClickListener;
     }
 
     @NonNull
@@ -41,6 +42,21 @@ public class SliderPagerAdaptor extends PagerAdapter {
         TextView slideTxt = slideLayout.findViewById(R.id.slide_textView);
         Picasso.get().load(mList.get(position).getImage()).into(slideImg);
         slideTxt.setText(mList.get(position).getTitle());
+
+        ImageView playView = slideLayout.findViewById(R.id.play_slide_button);
+
+        playView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                slideItemClickListener.onSlideClick(mList.get(position), slideImg);
+            }
+        });
+        slideLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                slideItemClickListener.onSlideClick(mList.get(position), slideImg);
+            }
+        });
 
         container.addView(slideLayout);
         return slideLayout;

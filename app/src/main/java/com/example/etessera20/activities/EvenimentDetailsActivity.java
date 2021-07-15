@@ -130,15 +130,12 @@ public class EvenimentDetailsActivity extends AppCompatActivity {
                         butonFav.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                System.out.println("######### A FOST APASAT BUTONUL!!");
                                 if(mListaFavorite.isEmpty()){
-                                    System.out.println("$$$$$$$$$$$$$$ AM INTRAT IN IF EMPTY");
                                     Favorite favorite = new Favorite(UUID.randomUUID().toString(), key, userID);
                                     favoriteReference.push().setValue(favorite);
                                     butonFav.setBackgroundResource(R.drawable.ic_star_black_24dp);
                                 }
                                 else {
-                                    System.out.println("%%%%%%%%%%%% AM INTRAT IN IF FULL");
                                     remove(favoriteReference);
                                     butonFav.setBackgroundResource(R.drawable.ic_star_border_black_24dp);
                                 }
