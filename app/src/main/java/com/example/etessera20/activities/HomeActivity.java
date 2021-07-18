@@ -1,5 +1,6 @@
 package com.example.etessera20.activities;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,8 +9,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,25 +26,38 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.etessera20.adaptors.SlideItemClickListener;
+import com.example.etessera20.models.Achitat;
 import com.example.etessera20.models.Eveniment;
 import com.example.etessera20.adaptors.EvenimentAdaptor;
 import com.example.etessera20.adaptors.EventItemClickListener;
 import com.example.etessera20.R;
 import com.example.etessera20.models.Slide;
 import com.example.etessera20.adaptors.SliderPagerAdaptor;
+import com.example.etessera20.models.Tranzactie;
+import com.example.etessera20.models.Utilizator;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 public class HomeActivity extends DrawerActivity implements EventItemClickListener, SlideItemClickListener {
     private List<Slide> lstSlides;
@@ -48,8 +67,6 @@ public class HomeActivity extends DrawerActivity implements EventItemClickListen
     private List<Eveniment> mListaEvenimente;
     private EvenimentAdaptor teatruAdaptor, standupAdaptor, concerteAdaptor;
     private SliderPagerAdaptor sliderPagerAdaptor;
-
-    private ProgressBar progressBar;
 
     private DatabaseReference databaseEvents;
 
@@ -72,7 +89,6 @@ public class HomeActivity extends DrawerActivity implements EventItemClickListen
         iniViews();
 
         iniListForAdaptors();
-
     }
 
     @SuppressLint("ResourceType")
@@ -129,11 +145,13 @@ public class HomeActivity extends DrawerActivity implements EventItemClickListen
         lstSlides = new ArrayList<Slide>();
         List<String>listType = new ArrayList<String>();
         listType.add("teatru"); listType.add("stand-up"); listType.add("concert");
-        int position = 0;
-        for(Eveniment e: listaEvenimente){
-            if(e.getType().equals(listType.get(position))){
-                lstSlides.add(new Slide(e.getThumbnail(),e.getTitlu(), e.getVideo()));
-                position++;
+
+        for(String type : listType){
+            for(Eveniment e : listaEvenimente){
+                if(e.getType().equals(type)){
+                    lstSlides.add(new Slide(e.getThumbnail(),e.getTitlu(), e.getVideo(), e.getId()));
+                    break;
+                }
             }
         }
 
@@ -180,8 +198,20 @@ public class HomeActivity extends DrawerActivity implements EventItemClickListen
 
     @Override
     public void onSlideClick(Slide slide, ImageView imageView) {
-        Intent intent = new Intent(this, PlayerActivity.class);
-        intent.putExtra("URL", slide.getVideo());
+        Intent intent = new Intent(HomeActivity.this, EvenimentDetailsActivity.class);
+
+        for( Eveniment eveniment : mListaEvenimente){
+            if(slide.getId().equals(eveniment.getId())){
+                intent.putExtra("title", eveniment.getTitlu());
+                intent.putExtra("imgCover", eveniment.getThumbnail());
+                intent.putExtra("imgURL", eveniment.getCover_img());
+                intent.putExtra("description", eveniment.getDescription());
+                intent.putExtra("price", eveniment.getPrice());
+                intent.putExtra("video", eveniment.getVideo());
+                intent.putExtra("id", eveniment.getId());
+            }
+        }
+
         startActivity(intent);
     }
 

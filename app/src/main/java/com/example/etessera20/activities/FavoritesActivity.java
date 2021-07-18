@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
@@ -74,6 +75,15 @@ public class FavoritesActivity extends DrawerActivity implements EventItemClickL
 
         Rv_concerte = findViewById(R.id.Rv_concerte_fav);
         Rv_concerte.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        Button refresh = findViewById(R.id.refresh_btn);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FavoritesActivity.this, FavoritesActivity.class);
+                startActivity(intent);
+            }
+        });
 
         iniFavoritList();
 

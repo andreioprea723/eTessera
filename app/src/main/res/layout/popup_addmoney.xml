@@ -30,7 +30,7 @@
         android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Suma"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:textColor="@color/colorAccent"
         android:textColorHint="@color/colorAccent"
         android:textSize="18dp"

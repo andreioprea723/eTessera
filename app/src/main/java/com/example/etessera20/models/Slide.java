@@ -6,11 +6,13 @@ public class Slide {
     public String image;
     public String title;
     public String video;
+    public String id;
 
-    public Slide(String image, String title, String video) {
+    public Slide(String image, String title, String video, String id) {
         this.image = image;
         this.title = title;
         this.video = video;
+        this.id = id;
     }
 
     public String getImage() {
@@ -35,5 +37,13 @@ public class Slide {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

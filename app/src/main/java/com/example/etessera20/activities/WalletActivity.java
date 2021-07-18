@@ -196,6 +196,12 @@ public class WalletActivity extends DrawerActivity {
                     return;
                 }
 
+                if(!cardNumber.matches("[0-9]+")){
+                    et_cardnumber.setError("Numarul cardului este invalid!");
+                    et_cardnumber.requestFocus();
+                    return;
+                }
+
                 if(dataExpirare.isEmpty()){
                     et_expireDate.setError("Data de expirare a cardului este necesara!");
                     et_expireDate.requestFocus();
@@ -211,6 +217,12 @@ public class WalletActivity extends DrawerActivity {
                 if(CSV.length() != 3){
                     et_CVV.setError("CSV invalid!");
                     et_CVV.requestFocus();
+                    return;
+                }
+
+                if(!CSV.matches("[0-9]+")){
+                    et_cardnumber.setError("Numarul cardului este invalid!");
+                    et_cardnumber.requestFocus();
                     return;
                 }
 
